@@ -247,9 +247,9 @@ def main():
         save_dir = f"/u/zliu/datastor1/LLaMA-Factory/eval_saves/{model_name_or_path_base}"
         os.makedirs(save_dir, exist_ok=True)
         if eval_data_name == "triviaqa":
-            output_file = f"{save_dir}/{eval_data_name}_{args.triviaqa_version}_{args.triviaqa_split}.xlsx"
+            output_file = f"{save_dir}/{eval_data_name}_{args.triviaqa_version}_{args.triviaqa_split}.jsonl"
         else:
-            output_file = f"{save_dir}/{eval_data_name}_{args.test_set_choice}_{args.question_key}_{args.context_type}.xlsx"
+            output_file = f"{save_dir}/{eval_data_name}_{args.test_set_choice}_{args.question_key}_{args.context_type}.jsonl"
     
         if not os.path.exists(output_file) or args.overwrite:
             
@@ -332,9 +332,10 @@ def main():
             except Exception as e:
                 print(f"\nError processing: {e}")
             # import pdb; pdb.set_trace()
-            df = pd.DataFrame(results)
-            df.to_excel(output_file, index=False)
-            print(f"\nFinal results saved to {output_file}")
+            # df = pd.DataFrame(results)
+            # df.to_excel(output_file, index=False)
+            io.dump_jsonlines(results, output_file)
+            # print(f"\nFinal results saved to {output_file}")
         
         # evaluate with llm_judge
         
