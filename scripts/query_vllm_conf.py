@@ -158,7 +158,7 @@ def parse_args():
         help="Sampling temperature"
     )
     parser.add_argument(
-        "--top-p", type=float, default=0.95,
+        "--top-p", type=float, default=1,
         help="Top-p sampling parameter (nucleus sampling)"
     )
     parser.add_argument(
@@ -166,7 +166,7 @@ def parse_args():
         help="Maximum tokens to generate"
     )
     parser.add_argument(
-        "--num-samples", type=int, default=3,
+        "--num-samples", type=int, default=30,
         help="Number of samples to generate per example"
     )
     parser.add_argument(
@@ -292,7 +292,7 @@ def main():
                 
                 if model is None:
                     model = LLM(args.model_name_or_path)
-                outputs = model.generate(texts[:10], sampling_params=sampling_params)
+                outputs = model.generate(texts[:], sampling_params=sampling_params)
                 results = []
                 
                 for idx, output in enumerate(outputs):
@@ -300,7 +300,7 @@ def main():
                     for sample_idx, out in enumerate(output.outputs):
                         
                         model_answer = out.text
-                        import pdb; pdb.set_trace()
+                        # import pdb; pdb.set_trace()
                         model_answer = model_answer.split("</think>")[-1].strip()
                         # Ground truth answer formatting
                         if eval_data_name == "triviaqa":
